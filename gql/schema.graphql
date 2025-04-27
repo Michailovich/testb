@@ -1,66 +1,71 @@
-type Main {
-    id: Int!
-    title: String!
-    sub_id: Int
-    sub_obj: String
-    created_at: String!
-    updated_at: String!
-    deleted_at: String
-    
-    tools: [Tool!]!
-    tables: [Table!]!
-    chairs: [Chair!]!
-}
+enum SubObjEnum { TOOL TABLE CHAIR }
+enum ChairType  { ABC CDE }
 
-type Tool {
-    id: Int!
-    title: String!
-    description: String
-    main_id: Int!
-    created_at: String!
-    updated_at: String!
-    deleted_at: String
-}
-
-type Table {
-    id: Int!
-    name: String!
-    main_id: Int!
-    created_at: String!
-    updated_at: String!
-    deleted_at: String
-}
-
-type Chair {
-    id: Int!
-    name: String!
-    type: String!
-    main_id: Int!
-    created_at: String!
-    updated_at: String!
-    deleted_at: String
-}
+input ToolInput  { title: String! description: String }
+input TableInput { name:  String! }
+input ChairInput { name:  String! type:   ChairType! }
 
 input MainInput {
-    title: String!
-    sub_id: Int
-    sub_obj: String
+  title: String!
+  tool:  ToolInput
+  table: TableInput
+  chair: ChairInput
 }
 
 input MainUpdateInput {
-    title: String
-    sub_id: Int
-    sub_obj: String
-    deleted_at: String
+  title:     String
+  deletedAt: String
+}
+
+type Tool {
+  id: Int!
+  title: String!
+  description: String
+  mainId: Int!
+  createdAt: String!
+  updatedAt: String!
+  deletedAt: String
+}
+
+type Table {
+  id: Int!
+  name: String!
+  mainId: Int!
+  createdAt: String!
+  updatedAt: String!
+  deletedAt: String
+}
+
+type Chair {
+  id: Int!
+  name: String!
+  type: ChairType!
+  mainId: Int!
+  createdAt: String!
+  updatedAt: String!
+  deletedAt: String
+}
+
+type Main {
+  id: Int!
+  title: String!
+  subObj: SubObjEnum!
+  subId: Int!
+  tool: Tool
+  table: Table
+  chair: Chair
+  createdAt: String!
+  updatedAt: String!
+  deletedAt: String
 }
 
 type Query {
-    mains(includeDeleted: Boolean = false): [Main!]!
-    main(id: Int!, includeDeleted: Boolean = false): Main
+  mains(includeDeleted: Boolean = false): [Main!]!
+  main(id: Int!, includeDeleted: Boolean = false): Main
 }
 
 type Mutation {
-    createMain(input: MainInput!): Main!
-    updateMain(id: Int!, input: MainUpdateInput!): Main!
-    deleteMain(id: Int!): Boolean!
+  createMain(input: MainInput!): Main!
+  updateMain(id: Int!, input: MainUpdateInput!): Main!
+  deleteMain(id: Int!): Boolean!
 }

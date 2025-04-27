@@ -12,10 +12,29 @@ docker-compose up --build
 
 ```
 mutation {
-  createMain(input: {title: "Test", sub_id: 1, sub_obj: "test"}) {
+  createMain(input: {
+    title: "My Tool Main"
+    tool: {
+      title: "Hammer"
+      description: "Steel claw hammer"
+    }
+  }) {
     id
     title
-    created_at
+    subObj
+    subId
+    tool {
+      id
+      title
+      description
+      mainId
+      createdAt
+      updatedAt
+      deletedAt
+    }
+    createdAt
+    updatedAt
+    deletedAt
   }
 }
 ```
@@ -23,17 +42,26 @@ mutation {
 ### Обновление записи:
 ```
 mutation {
-  updateMain(id: 1, input: {title: "Updated", deleted_at: ""}) {
+  updateMain(id: 1, input: {
+    title: "Updated Main Title"
+  }) {
     id
     title
-    deleted_at
+    updatedAt
+    deletedAt
   }
 }
 ```
 
-### Удаление записи
+### Удаление записи(soft delete)
 ```
 mutation {
-  deleteMain(id: 1)
+  updateMain(id: 1, input: {
+    deletedAt: "2024-07-01T12:00:00Z"
+  }) {
+    id
+    title
+    deletedAt
+  }
 }
 ```
